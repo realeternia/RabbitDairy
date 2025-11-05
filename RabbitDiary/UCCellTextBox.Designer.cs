@@ -33,6 +33,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.customTextBox1 = new CustomTextBox();
+            this.buttonDatePick = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -66,6 +67,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonDatePick);
             this.panel1.Controls.Add(this.labelPageInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -100,6 +102,16 @@
             this.customTextBox1.TextContent = "";
             this.customTextBox1.TextFont = new System.Drawing.Font("微软雅黑", 15F);
             // 
+            // buttonDatePick
+            // 
+            this.buttonDatePick.Location = new System.Drawing.Point(613, 3);
+            this.buttonDatePick.Name = "buttonDatePick";
+            this.buttonDatePick.Size = new System.Drawing.Size(75, 23);
+            this.buttonDatePick.TabIndex = 4;
+            this.buttonDatePick.Text = "日历";
+            this.buttonDatePick.UseVisualStyleBackColor = true;
+            this.buttonDatePick.Click += new System.EventHandler(this.buttonDatePick_Click);
+            // 
             // UCCellTextBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -122,5 +134,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button buttonDatePick;
     }
 }

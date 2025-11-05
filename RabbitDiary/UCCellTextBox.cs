@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TimeControl;
 
 namespace RabbitDiary
 {
@@ -19,5 +20,10 @@ namespace RabbitDiary
             customTextBox1.LabelPageInfo = labelPageInfo;
         }
 
+        private void buttonDatePick_Click(object sender, EventArgs e)
+        {
+            var f = new DatePickerForm();
+            f.ShowDialog();
+        }
     }
 }
