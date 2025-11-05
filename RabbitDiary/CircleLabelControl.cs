@@ -13,7 +13,7 @@ namespace TimeControl
         {
             this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
-            this.Size = new Size(25, 25);
+            this.Size = new Size(35, 35);
             this.BackColor = Color.WhiteSmoke;
             this.Font = new Font("Arial", 10.5f, FontStyle.Regular);
         }
@@ -46,5 +46,19 @@ namespace TimeControl
 
         // 简单地让控件可被 TabFocus（如果需要）
         protected override bool IsInputKey(Keys keyData) => true;
+
+        // 鼠标移入时显示手形光标
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            this.Cursor = Cursors.Hand;
+        }
+
+        // 鼠标移出时恢复默认光标
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            this.Cursor = Cursors.Default;
+        }
     }
 }
