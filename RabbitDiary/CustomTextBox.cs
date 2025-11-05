@@ -279,89 +279,79 @@ public class CustomTextBox : Panel
         int cellsPerRow = this.Width / cellSize.Width;
 
         switch (e.KeyCode)
-        {            case Keys.Left:
+        {         
+            case Keys.Left:
                 if (_cursorPosition > 0)
                 {
                     _cursorPosition--;
+                    UpdateCaretPosition();
                 }
                 break;
             case Keys.Right:
                 if (_cursorPosition < _text.Length)
                 {
                     _cursorPosition++;
+                    UpdateCaretPosition();
                 }
                 break;
             case Keys.Up:
-                // 向上移动光标到上一行
+                // 向上移动光标到上一行：在向上 cellsPerRow 范围内寻找最后一个 '\n'，若找到则移到该 '\n' 的前一格；否则减去 cellsPerRow。
                 {
-                    // 计算当前光标所在的显示行
-                    int currentRow = 0;
-                    int count = 0;
-                    for (int i = 0; i < _cursorPosition && i < _text.Length; i++)
+                    int cellsPerRowLocal = cellsPerRow;
+                    int startRange = Math.Max(0, _cursorPosition - cellsPerRowLocal);
+                    int endRange = Math.Max(0, _cursorPosition - 1);
+                    int lastNewline = -1;
+                    if (endRange >= 0)
                     {
-                        if (_text[i] == '\n')
-                        {
-                            currentRow++;
-                            count = 0;
-                        }
-                        else
-                        {
-                            count++;
-                            if (count >= cellsPerRow)
-                            {
-                                currentRow++;
-                                count = 0;
-                            }
-                        }
+                        lastNewline = _text.LastIndexOf('\n', endRange);
+                        // 确保找到的换行符在我们的范围内
+                        if (lastNewline < startRange)
+                            lastNewline = -1;
                     }
-                    
-                    // 如果不在第一行，尝试向上移动
-                    if (currentRow > 0)
+
+                    if (lastNewline != -1)
                     {
-                        // 计算上一行的目标位置
-                        int targetPosition = _cursorPosition;
-                        int targetRow = currentRow - 1;
-                        int currentLineStart = 0;
-                        int rowCount = 0;
-                        
-                        // 向前搜索找到目标行的起始位置
-                        for (int i = _cursorPosition - 1; i >= 0; i--)
-                        {
-                            if (_text[i] == '\n')
-                            {
-                                if (rowCount == 0)
-                                {
-                                    currentLineStart = i;
-                                }
-                                rowCount++;
-                                if (rowCount == 2)
-                                {
-                                    currentLineStart = i + 1;
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        // 尝试将光标移动到上一行相同列的位置
-                        int columnInCurrentLine = _cursorPosition - currentLineStart;
-                        targetPosition = currentLineStart - columnInCurrentLine;
-                        
-                        // 确保目标位置有效
-                        if (targetPosition >= 0)
-                        {
-                            _cursorPosition = targetPosition;
-                        }
+                        // 移到该换行符的前一格（如果存在），否则到文本开头
+                        int target = lastNewline - 1;
+                        _cursorPosition = Math.Max(0, target);
                     }
+                    else
+                    {
+                        // 没有换行符，按 cellsPerRow 向上移动
+                        _cursorPosition = Math.Max(0, _cursorPosition - cellsPerRowLocal);
+                    }
+
+                    UpdateCaretPosition();
                 }
                 break;
             case Keys.Down:
-                // 向下移动光标到下一行
+                // 向下移动光标到下一行：在向下 cellsPerRow 范围内寻找第一个 '\n'，若找到则移到该 '\n' 的后一格；否则加上 cellsPerRow。
                 {
-                    // 简化处理，向后移动cellsPerRow个字符
-                    if (_cursorPosition + cellsPerRow <= _text.Length)
+                    int cellsPerRowLocal = cellsPerRow;
+                    int startRange = _cursorPosition;
+                    int endRange = Math.Min(_text.Length - 1, _cursorPosition + cellsPerRowLocal - 1);
+                    int nextNewline = -1;
+                    if (startRange <= endRange)
                     {
-                        _cursorPosition += cellsPerRow;
+                        nextNewline = _text.IndexOf('\n', startRange);
+                        // 确保找到的换行符在我们的范围内
+                        if (nextNewline == -1 || nextNewline > endRange)
+                            nextNewline = -1;
                     }
+
+                    if (nextNewline != -1)
+                    {
+                        // 移到该换行符的后一格（即下一行开头）
+                        int target = nextNewline + 1;
+                        _cursorPosition = Math.Min(_text.Length, target);
+                    }
+                    else
+                    {
+                        // 没有换行符，按 cellsPerRow 向下移动
+                        _cursorPosition = Math.Min(_text.Length, _cursorPosition + cellsPerRowLocal);
+                    }
+
+                    UpdateCaretPosition();
                 }
                 break;
             case Keys.Home:
@@ -415,6 +405,18 @@ public class CustomTextBox : Panel
         UpdateInputMethodPosition();
 
         e.Handled = true;
+    }
+
+    // 新增：将方向键（以及需要的导航键）视为输入键，防止被父容器当作焦点导航键拦截。
+    protected override bool IsInputKey(Keys keyData)
+    {
+        Keys key = keyData & Keys.KeyCode;
+        if (key == Keys.Up || key == Keys.Down || key == Keys.Left || key == Keys.Right
+            || key == Keys.Home || key == Keys.End || key == Keys.PageUp || key == Keys.PageDown)
+        {
+            return true;
+        }
+        return base.IsInputKey(keyData);
     }
 
     protected override void OnKeyPress(KeyPressEventArgs e)
