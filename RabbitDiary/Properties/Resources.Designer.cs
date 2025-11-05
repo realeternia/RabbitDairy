@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyDiary.Properties
+namespace RabbitDiary.Properties
 {
 
 

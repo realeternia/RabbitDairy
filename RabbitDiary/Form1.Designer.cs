@@ -1,4 +1,4 @@
-﻿namespace MyDiary
+﻿namespace RabbitDiary
 {
     partial class Form1
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ucCellTextBox1 = new MyDiary.UCCellTextBox();
+            this.ucCellTextBox1 = new RabbitDiary.UCCellTextBox();
             this.SuspendLayout();
             // 
             // ucCellTextBox1

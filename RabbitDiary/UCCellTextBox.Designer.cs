@@ -1,4 +1,4 @@
-﻿namespace MyDiary
+﻿namespace RabbitDiary
 {
     partial class UCCellTextBox
     {

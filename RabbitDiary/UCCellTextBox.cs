@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MyDiary
+namespace RabbitDiary
 {
     public partial class UCCellTextBox : UserControl
     {
