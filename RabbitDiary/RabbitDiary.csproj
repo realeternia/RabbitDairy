@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3A1E0013-AA95-4048-A13E-9DAC69240469}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MyDiary</RootNamespace>
-    <AssemblyName>MyDiary</AssemblyName>
+    <RootNamespace>RabbitDiary</RootNamespace>
+    <AssemblyName>RabbitDiary</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -77,6 +77,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UCCellTextBox.resx">
       <DependentUpon>UCCellTextBox.cs</DependentUpon>

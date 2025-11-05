@@ -108,6 +108,9 @@ public class CustomTextBox : Panel
             _cursorPosition = Math.Min(_cursorPosition, _text.Length);
             
             this.Invalidate();
+
+            // 新增：文本变化时更新统计显示
+            UpdatePageInfo();
         }
     }
 
@@ -120,6 +123,41 @@ public class CustomTextBox : Panel
             _font = value;
             this.Invalidate();
         }
+    }
+
+    // 新增：外部用于显示页信息的 Label（可为 null）
+    public Label LabelPageInfo { get; set; }
+
+    // 新增：更新统计信息并写入 LabelPageInfo（字符数：不计回车/换行/空格；行数：按 '\n' 计）
+    private void UpdatePageInfo()
+    {
+        if (LabelPageInfo == null) return;
+
+        int charCount = 0;
+        int lineCount = 0;
+
+        if (string.IsNullOrEmpty(_text))
+        {
+            charCount = 0;
+            lineCount = 0;
+        }
+        else
+        {
+            foreach (char c in _text)
+            {
+                if (c != '\r' && c != '\n' && c != ' ')
+                    charCount++;
+            }
+
+            // 统计行数：按换行符分割，空文本视为0行
+            lineCount = 1;
+            foreach (char c in _text)
+            {
+                if (c == '\n') lineCount++;
+            }
+        }
+
+        LabelPageInfo.Text = $"字数: {charCount}, 行数: {lineCount}";
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -178,7 +216,7 @@ public class CustomTextBox : Panel
                     // 绘制非换行符字符
                     if (currentRow < yCount && currentCol < cellsPerRow)
                     {
-                        g.DrawString(c.ToString(), _font, Brushes.Black, currentCol * cellSize.Width + 5, currentRow * cellSize.Height + 20 + 5);
+                        g.DrawString(c.ToString(), _font, Brushes.Black, currentCol * cellSize.Width + 5 + 7, currentRow * cellSize.Height + 20 + 5);
                     }
                     
                     // 移动到下一列
@@ -401,6 +439,9 @@ public class CustomTextBox : Panel
         // 重置光标可见性
         _cursorVisible = true;
         
+        // 新增：文本可能已变化，更新统计信息
+        UpdatePageInfo();
+
         this.Invalidate();
         UpdateInputMethodPosition();
 
@@ -431,20 +472,12 @@ public class CustomTextBox : Panel
             
             this.Invalidate();
             UpdateInputMethodPosition();
+
+            // 新增：文本已变化，刷新统计
+            UpdatePageInfo();
         }
 
         e.Handled = true;
-    }
-
-    // 获取文本绘制区域
-    private Rectangle GetTextRectangle()
-    {
-        return new Rectangle(
-            this.Padding.Left,
-            this.Padding.Top,
-            this.Width - this.Padding.Horizontal,
-            this.Height - this.Padding.Vertical
-        );
     }
 
     // 获取网格单元格大小

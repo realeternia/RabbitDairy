@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ucCellTextBox1 = new RabbitDiary.UCCellTextBox();
-            this.ucCellTextBox2 = new RabbitDiary.UCCellTextBox();
             this.SuspendLayout();
             // 
             // ucCellTextBox1
@@ -37,25 +37,18 @@
             this.ucCellTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucCellTextBox1.Location = new System.Drawing.Point(0, 0);
             this.ucCellTextBox1.Name = "ucCellTextBox1";
-            this.ucCellTextBox1.Size = new System.Drawing.Size(740, 991);
+            this.ucCellTextBox1.Size = new System.Drawing.Size(718, 991);
             this.ucCellTextBox1.TabIndex = 0;
-            // 
-            // ucCellTextBox2
-            // 
-            this.ucCellTextBox2.Location = new System.Drawing.Point(8, 8);
-            this.ucCellTextBox2.Name = "ucCellTextBox2";
-            this.ucCellTextBox2.Size = new System.Drawing.Size(726, 981);
-            this.ucCellTextBox2.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 991);
-            this.Controls.Add(this.ucCellTextBox2);
+            this.ClientSize = new System.Drawing.Size(718, 991);
             this.Controls.Add(this.ucCellTextBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "兔头日记本";
             this.ResumeLayout(false);
 
         }
@@ -63,7 +56,6 @@
         #endregion
 
         private UCCellTextBox ucCellTextBox1;
-        private UCCellTextBox ucCellTextBox2;
     }
 }
 

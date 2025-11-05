@@ -15,14 +15,9 @@ namespace RabbitDiary
         public UCCellTextBox()
         {
             InitializeComponent();
+
+            customTextBox1.LabelPageInfo = labelPageInfo;
         }
 
-        private void buttonNext_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void buttonPrev_Click(object sender, EventArgs e)
-        {
-        }
     }
 }
