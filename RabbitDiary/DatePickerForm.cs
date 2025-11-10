@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -221,8 +222,8 @@ namespace TimeControl
             {
                 CircleLabelControl circleLabel = new CircleLabelControl();
                 circleLabel.Location = new Point(6 + i * 47, 2 + y * 36);
-                Brush backColor = Brushes.WhiteSmoke;
-                Brush textColor = Brushes.Black;
+                Color backColor = Color.WhiteSmoke;
+                Color textColor = Color.Black;
                 circleLabel.Text = getDateString(i, ref backColor, ref textColor, date, week, y, ref dateTimeDic);
 
                 // 如果传入了 targetMonth，则仅显示属于该月的日期；否则显示全部（用于周视图）
@@ -232,7 +233,7 @@ namespace TimeControl
                     continue;
                 }
 
-                circleLabel.BackColor = (backColor as SolidBrush)?.Color ?? Color.WhiteSmoke;
+                circleLabel.CircleColor = backColor;
                 circleLabel.TextColor = textColor;
                 circleLabel.Name = $"circleLabel_{i}_{y}";
                 circleLabel.Size = new Size(35, 35);
@@ -243,7 +244,7 @@ namespace TimeControl
             }
         }
 
-        private string getDateString(int i, ref Brush backColor, ref Brush textColor, DateTime dateNow, DayOfWeek week, int y, ref DateTime dateTimeDic)
+        private string getDateString(int i, ref Color backColor, ref Color textColor, DateTime dateNow, DayOfWeek week, int y, ref DateTime dateTimeDic)
         {
             string date = string.Empty;
             int offset = 0;
@@ -263,11 +264,11 @@ namespace TimeControl
             // 周末（周六/周日）字体为红色，其它为黑色
             if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
             {
-                textColor = Brushes.Red;
+                textColor = Color.Red;
             }
             else
             {
-                textColor = Brushes.Black;
+                textColor = Color.Black;
             }
 
             // 今天显示为 "今"（颜色仍受周末规则影响）
@@ -280,6 +281,16 @@ namespace TimeControl
                 date = d.ToString("dd");
             }
             // 在月视图时可根据是否同月变灰（示例里只实现周视图默认）
+
+            string baseDir = Path.Combine(Application.StartupPath, "Diary");
+
+            // 按月分目录： yyyy-MM
+            string monthDir = Path.Combine(baseDir, dateTimeDic.ToString("yyyy-MM"));
+            if (Directory.Exists(monthDir) && File.Exists(Path.Combine(monthDir, dateTimeDic.ToString("yyyy-MM-dd") + ".txt")))
+            {
+                backColor = Color.LimeGreen;
+            }
+
             return date;
         }
 
@@ -315,7 +326,7 @@ namespace TimeControl
 
             // 高亮选中
             circleLabelControl.BackColor = Brushes.RoyalBlue is Brush ? Color.RoyalBlue : circleLabelControl.BackColor;
-            circleLabelControl.TextColor = Brushes.White;
+            circleLabelControl.TextColor = Color.White;
             circleLabelControl.Font = new Font("Arial", 10.5f, FontStyle.Bold);
             circleLabelControl.Invalidate();
         }

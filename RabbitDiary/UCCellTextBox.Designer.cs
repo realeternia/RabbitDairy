@@ -31,9 +31,10 @@
             this.labelPageInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.customTextBox1 = new CustomTextBox();
             this.buttonDatePick = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.customTextBox1 = new CustomTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -67,6 +68,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonSave);
             this.panel1.Controls.Add(this.buttonDatePick);
             this.panel1.Controls.Add(this.labelPageInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -74,6 +76,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(720, 29);
             this.panel1.TabIndex = 1;
+            // 
+            // buttonDatePick
+            // 
+            this.buttonDatePick.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDatePick.Location = new System.Drawing.Point(613, 3);
+            this.buttonDatePick.Name = "buttonDatePick";
+            this.buttonDatePick.Size = new System.Drawing.Size(75, 23);
+            this.buttonDatePick.TabIndex = 4;
+            this.buttonDatePick.Text = "日历";
+            this.buttonDatePick.UseVisualStyleBackColor = true;
+            this.buttonDatePick.Click += new System.EventHandler(this.buttonDatePick_Click);
             // 
             // panel2
             // 
@@ -84,6 +97,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(720, 920);
             this.panel2.TabIndex = 2;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSave.Location = new System.Drawing.Point(508, 3);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 5;
+            this.buttonSave.Text = "保存";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // customTextBox1
             // 
@@ -96,21 +120,11 @@
             this.customTextBox1.Location = new System.Drawing.Point(3, 3);
             this.customTextBox1.Name = "customTextBox1";
             this.customTextBox1.Padding = new System.Windows.Forms.Padding(3);
-            this.customTextBox1.Size = new System.Drawing.Size(697, 4000);
+            this.customTextBox1.Size = new System.Drawing.Size(680, 4000);
             this.customTextBox1.TabIndex = 0;
             this.customTextBox1.TabStop = true;
             this.customTextBox1.TextContent = "";
             this.customTextBox1.TextFont = new System.Drawing.Font("微软雅黑", 15F);
-            // 
-            // buttonDatePick
-            // 
-            this.buttonDatePick.Location = new System.Drawing.Point(613, 3);
-            this.buttonDatePick.Name = "buttonDatePick";
-            this.buttonDatePick.Size = new System.Drawing.Size(75, 23);
-            this.buttonDatePick.TabIndex = 4;
-            this.buttonDatePick.Text = "日历";
-            this.buttonDatePick.UseVisualStyleBackColor = true;
-            this.buttonDatePick.Click += new System.EventHandler(this.buttonDatePick_Click);
             // 
             // UCCellTextBox
             // 
@@ -135,5 +149,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button buttonDatePick;
+        private System.Windows.Forms.Button buttonSave;
     }
 }

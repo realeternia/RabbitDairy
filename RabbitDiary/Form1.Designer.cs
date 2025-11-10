@@ -37,14 +37,14 @@
             this.ucCellTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucCellTextBox1.Location = new System.Drawing.Point(0, 0);
             this.ucCellTextBox1.Name = "ucCellTextBox1";
-            this.ucCellTextBox1.Size = new System.Drawing.Size(718, 991);
+            this.ucCellTextBox1.Size = new System.Drawing.Size(1356, 1175);
             this.ucCellTextBox1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(718, 991);
+            this.ClientSize = new System.Drawing.Size(1356, 1175);
             this.Controls.Add(this.ucCellTextBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";

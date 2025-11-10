@@ -6,7 +6,7 @@ using System.IO;
 
 public class CustomTextBox : Panel
 {
-    private string _text = "";
+    public string DiaryBody = "";
     private int _cursorPosition = 0;
     private bool _cursorVisible = true;
     private Timer _cursorTimer;
@@ -88,24 +88,24 @@ public class CustomTextBox : Panel
     private void CheckCursorPagePosition()
     {
         int pageStart = 0;
-        int pageEnd = Math.Min(pageStart + _charsPerPage, _text.Length);
+        int pageEnd = Math.Min(pageStart + _charsPerPage, DiaryBody.Length);
         
         // 如果光标不在当前页范围内，将其移动到页首
         if (_cursorPosition < pageStart || _cursorPosition > pageEnd)
         {
-            _cursorPosition = Math.Max(pageStart, Math.Min(_cursorPosition, _text.Length));
+            _cursorPosition = Math.Max(pageStart, Math.Min(_cursorPosition, DiaryBody.Length));
         }
     }
 
     // 文本属性
     public string TextContent
     {
-        get { return _text; }
+        get { return DiaryBody; }
         set
         {
-            string oldValue = _text;
-            _text = value ?? "";
-            _cursorPosition = Math.Min(_cursorPosition, _text.Length);
+            string oldValue = DiaryBody;
+            DiaryBody = value ?? "";
+            _cursorPosition = Math.Min(_cursorPosition, DiaryBody.Length);
             
             this.Invalidate();
 
@@ -129,21 +129,21 @@ public class CustomTextBox : Panel
     public Label LabelPageInfo { get; set; }
 
     // 新增：更新统计信息并写入 LabelPageInfo（字符数：不计回车/换行/空格；行数：按 '\n' 计）
-    private void UpdatePageInfo()
+    public void UpdatePageInfo()
     {
         if (LabelPageInfo == null) return;
 
         int charCount = 0;
         int lineCount = 0;
 
-        if (string.IsNullOrEmpty(_text))
+        if (string.IsNullOrEmpty(DiaryBody))
         {
             charCount = 0;
             lineCount = 0;
         }
         else
         {
-            foreach (char c in _text)
+            foreach (char c in DiaryBody)
             {
                 if (c != '\r' && c != '\n' && c != ' ')
                     charCount++;
@@ -151,13 +151,13 @@ public class CustomTextBox : Panel
 
             // 统计行数：按换行符分割，空文本视为0行
             lineCount = 1;
-            foreach (char c in _text)
+            foreach (char c in DiaryBody)
             {
                 if (c == '\n') lineCount++;
             }
         }
 
-        LabelPageInfo.Text = $"字数: {charCount}, 行数: {lineCount}";
+        LabelPageInfo.Text = $"{CurrentDate:yyyy年MM月dd日} 字数: {charCount}, 行数: {lineCount}";
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -189,7 +189,7 @@ public class CustomTextBox : Panel
 
             // 计算当前页的起始和结束位置
             int pageStart = 0;
-            int pageEnd = _text.Length;
+            int pageEnd = DiaryBody.Length;
 
             // 绘制文本（处理换行符）
             int currentRow = 0;
@@ -202,7 +202,7 @@ public class CustomTextBox : Panel
                 if (charCountOnPage >= _charsPerPage)
                     break;
                 
-                char c = _text[i];
+                char c = DiaryBody[i];
                 
                 if (c == '\n')
                 {
@@ -326,7 +326,7 @@ public class CustomTextBox : Panel
                 }
                 break;
             case Keys.Right:
-                if (_cursorPosition < _text.Length)
+                if (_cursorPosition < DiaryBody.Length)
                 {
                     _cursorPosition++;
                     UpdateCaretPosition();
@@ -341,7 +341,7 @@ public class CustomTextBox : Panel
                     int lastNewline = -1;
                     if (endRange >= 0)
                     {
-                        lastNewline = _text.LastIndexOf('\n', endRange);
+                        lastNewline = DiaryBody.LastIndexOf('\n', endRange);
                         // 确保找到的换行符在我们的范围内
                         if (lastNewline < startRange)
                             lastNewline = -1;
@@ -367,11 +367,11 @@ public class CustomTextBox : Panel
                 {
                     int cellsPerRowLocal = cellsPerRow;
                     int startRange = _cursorPosition;
-                    int endRange = Math.Min(_text.Length - 1, _cursorPosition + cellsPerRowLocal - 1);
+                    int endRange = Math.Min(DiaryBody.Length - 1, _cursorPosition + cellsPerRowLocal - 1);
                     int nextNewline = -1;
                     if (startRange <= endRange)
                     {
-                        nextNewline = _text.IndexOf('\n', startRange);
+                        nextNewline = DiaryBody.IndexOf('\n', startRange);
                         // 确保找到的换行符在我们的范围内
                         if (nextNewline == -1 || nextNewline > endRange)
                             nextNewline = -1;
@@ -381,12 +381,12 @@ public class CustomTextBox : Panel
                     {
                         // 移到该换行符的后一格（即下一行开头）
                         int target = nextNewline + 1;
-                        _cursorPosition = Math.Min(_text.Length, target);
+                        _cursorPosition = Math.Min(DiaryBody.Length, target);
                     }
                     else
                     {
                         // 没有换行符，按 cellsPerRow 向下移动
-                        _cursorPosition = Math.Min(_text.Length, _cursorPosition + cellsPerRowLocal);
+                        _cursorPosition = Math.Min(DiaryBody.Length, _cursorPosition + cellsPerRowLocal);
                     }
 
                     UpdateCaretPosition();
@@ -397,7 +397,7 @@ public class CustomTextBox : Panel
                 {
                     // 向前查找最近的换行符或文本开头
                     int pos = _cursorPosition - 1;
-                    while (pos >= 0 && _text[pos] != '\n')
+                    while (pos >= 0 && DiaryBody[pos] != '\n')
                     {
                         pos--;
                     }
@@ -409,7 +409,7 @@ public class CustomTextBox : Panel
                 {
                     // 向后查找最近的换行符或文本结尾
                     int pos = _cursorPosition;
-                    while (pos < _text.Length && _text[pos] != '\n')
+                    while (pos < DiaryBody.Length && DiaryBody[pos] != '\n')
                     {
                         pos++;
                     }
@@ -419,19 +419,19 @@ public class CustomTextBox : Panel
             case Keys.Back:
                 if (_cursorPosition > 0)
                 {
-                    _text = _text.Remove(_cursorPosition - 1, 1);
+                    DiaryBody = DiaryBody.Remove(_cursorPosition - 1, 1);
                     _cursorPosition--;
                 }
                 break;
             case Keys.Delete:
-                if (_cursorPosition < _text.Length)
+                if (_cursorPosition < DiaryBody.Length)
                 {
-                    _text = _text.Remove(_cursorPosition, 1);
+                    DiaryBody = DiaryBody.Remove(_cursorPosition, 1);
                 }
                 break;
             case Keys.Enter:
                 // 处理Enter键，支持长按持续输入
-                _text = _text.Insert(_cursorPosition, "\n");
+                DiaryBody = DiaryBody.Insert(_cursorPosition, "\n");
                 _cursorPosition++;
                 break;
         }
@@ -467,7 +467,7 @@ public class CustomTextBox : Panel
         // 处理可打印字符
         if (!char.IsControl(e.KeyChar))
         {
-            _text = _text.Insert(_cursorPosition, e.KeyChar.ToString());
+            DiaryBody = DiaryBody.Insert(_cursorPosition, e.KeyChar.ToString());
             _cursorPosition++;
             
             this.Invalidate();
@@ -520,9 +520,9 @@ public class CustomTextBox : Panel
         
         for (int i = startIndex; i < endIndex; i++)
         {
-            if (i >= _text.Length) break;
+            if (i >= DiaryBody.Length) break;
             
-            if (_text[i] == '\n')
+            if (DiaryBody[i] == '\n')
             {
                 // 遇到换行符，行数加1，列数重置
                 displayRow++;
@@ -571,13 +571,13 @@ public class CustomTextBox : Panel
         int currentCol = 0;
         int charCountOnPage = 0;
         
-        for (int i = pageStart; i < _text.Length; i++)
+        for (int i = pageStart; i < DiaryBody.Length; i++)
         {
             // 如果已达到页面字符上限，停止搜索
             if (charCountOnPage >= _charsPerPage)
                 break;
             
-            if (_text[i] == '\n')
+            if (DiaryBody[i] == '\n')
             {
                 // 遇到换行符，行数加1，列数重置
                 currentRow++;
@@ -604,7 +604,7 @@ public class CustomTextBox : Panel
         }
         
         // 如果未找到精确位置，返回当前页的末尾位置
-        return Math.Min(pageStart + _charsPerPage, _text.Length);
+        return Math.Min(pageStart + _charsPerPage, DiaryBody.Length);
     }
 
     // 获取文本高度（用于光标）
@@ -695,6 +695,26 @@ public class CustomTextBox : Panel
             // 记录错误但不抛出异常
             System.Diagnostics.Debug.WriteLine("更新输入法位置失败: " + ex.Message);
         }
+    }
+
+    // 新增：当前选中的日期
+    public DateTime CurrentDate { get; private set; } = DateTime.Now;
+
+    // 新增：日期变化事件参数
+    public class DateChangedEventArgs : EventArgs
+    {
+        public DateTime Date { get; }
+        public DateChangedEventArgs(DateTime date) { Date = date; }
+    }
+
+    // 新增：当日期改变时触发（切换日期或初始化完成）
+    public event EventHandler<DateChangedEventArgs> OnChangeDate;
+
+    // 新增：外部/内部调用以切换日期并触发事件
+    public void ChangeDate(DateTime date)
+    {
+        CurrentDate = date;
+        OnChangeDate?.Invoke(this, new DateChangedEventArgs(date));
     }
 
     protected override void Dispose(bool disposing)
